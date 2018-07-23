@@ -10,7 +10,7 @@ RUN set -ex && \
     " && \
     apt-get update && \
     apt-get install -y ${buildDeps} --no-install-recommends && \
-    wget https://raw.githubusercontent.com/currycan/rabbitmq/master/rabbitmq-dump-queue-v0.3-linux-amd64.tgz && \
+    wget https://github-production-release-asset-2e65be.s3.amazonaws.com/26514888/e5de3730-a023-11e6-8b64-9077442b47da?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAIWNJYAX4CSVEH53A%2F20180723%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20180723T065636Z&X-Amz-Expires=300&X-Amz-Signature=92f35ce6117dd45ff16348321a644afe850bf7be59fd38596d53b39b05a8c485&X-Amz-SignedHeaders=host&actor_id=24838907&response-content-disposition=attachment%3B%20filename%3Drabbitmq-dump-queue-v0.3-linux-amd64.tgz&response-content-type=application%2Foctet-stream && \
     tar zxvf rabbitmq-dump-queue-v0.3-linux-amd64.tgz && \
     mv rabbitmq-dump-queue-v0.3-linux-amd64/rabbitmq-dump-queue /usr/local/bin/ && \
     chmod +x /usr/local/bin/rabbitmq-dump-queue && \
