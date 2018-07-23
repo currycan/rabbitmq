@@ -2,7 +2,7 @@
 
 if [ 0"$RABBITMQ_NODE_TYPE" != "0" ];then
     set -ex
-    if [ -e "/root/is_not_first_time" ]; then
+    if [ $(ls /var/lib/rabbitmq/mnesia/*.pid | wc -l)=1 ];
         exec "$@"
     else
         if [ $RABBITMQ_NODE_TYPE == "disc" ];then
@@ -16,7 +16,6 @@ if [ 0"$RABBITMQ_NODE_TYPE" != "0" ];then
         else
             echo "[Error] please check the RABBITMQ_NODE_TYPE, it should be 'ram' or 'disc'!"
         fi
-        touch /root/is_not_first_time
         sleep 2s
         exec "$@"
     fi
