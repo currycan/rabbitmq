@@ -1,6 +1,7 @@
 FROM rabbitmq:3.7-management
 
 LABEL maintainer "Platform/IIBU <zhangzhitao@fmsh.com.cn>"
+LABEL base="rabbitmq:3.7-management" \
 
 RUN set -ex && \
     buildDeps=" \
