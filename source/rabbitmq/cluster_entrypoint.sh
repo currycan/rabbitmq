@@ -2,7 +2,7 @@
 
 if [ 0"$RABBITMQ_NODE_TYPE" != "0" ];then
     set -ex
-    if [ $(ls /var/lib/rabbitmq/mnesia/*.pid | wc -l)=1 ];then
+    if [ -e /var/lib/rabbitmq/mnesia/*.pid ]; then
         exec "$@"
     else
         if [ $RABBITMQ_NODE_TYPE == "disc" ];then
