@@ -23,7 +23,7 @@ RUN set -ex && \
     rabbitmq-plugins enable --offline rabbitmq_shovel && \
     rabbitmq-plugins enable --offline rabbitmq_shovel_management
 
-COPY source/rabbitmq /usr/local/bin
+# COPY source/rabbitmq /usr/local/bin
 
 ENV TZ=Asia/Shanghai \
     RABBITMQ_NODE_IP_ADDRESS=0.0.0.0 \
