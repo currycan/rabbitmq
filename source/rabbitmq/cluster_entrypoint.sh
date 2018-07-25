@@ -2,7 +2,8 @@
 
 if [ 0"$RABBITMQ_NODE_TYPE" != "0" ];then
     set -ex
-    if [ -e /var/lib/rabbitmq/mnesia/*.pid ]; then
+    pids=$(ls *.pid 2> /dev/null | wc -l)
+    if [ "$pids" != "0" ];then
         exec "$@"
     else
         if [ $RABBITMQ_NODE_TYPE == "stats" ];then
