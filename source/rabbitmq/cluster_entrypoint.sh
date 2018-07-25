@@ -2,8 +2,7 @@
 
 if [ 0"$RABBITMQ_NODE_TYPE" != "0" ];then
     set -ex
-    pids=$(ls /var/lib/rabbitmq/mnesia/*.pid 2> /dev/null | wc -l)
-    if [ $pids != 0 ];then
+    if [ -e "/var/lib/rabbitmq/is_not_first_time" ]; then
         exec "$@"
     else
         if [ $RABBITMQ_NODE_TYPE == "stats" ];then
@@ -23,6 +22,7 @@ if [ 0"$RABBITMQ_NODE_TYPE" != "0" ];then
         else
             echo "[Error] please check the RABBITMQ_NODE_TYPE, it should be 'ram', 'disc' or 'stats'!"
         fi
+        touch /var/lib/rabbitmq/is_not_first_time
         sleep 1s
         exec "$@"
     fi
