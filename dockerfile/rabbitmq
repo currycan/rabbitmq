@@ -20,6 +20,7 @@ RUN set -ex && \
     rm -rf /var/cache/apt/* && \
     rm -rf /var/lib/apt/lists/* && \
 
+    rabbitmq-plugins enable --offline rabbitmq_sharding && \
     rabbitmq-plugins enable --offline rabbitmq_federation && \
     rabbitmq-plugins enable --offline rabbitmq_federation_management && \
     rabbitmq-plugins enable --offline rabbitmq_shovel && \
