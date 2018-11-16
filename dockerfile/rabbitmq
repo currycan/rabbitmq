@@ -16,7 +16,7 @@ RUN set -ex && \
     chmod +x /usr/local/bin/docker-entrypoint.sh && \
     wget --no-check-certificate -O /usr/local/bin/rabbitmq-dump-queue https://raw.githubusercontent.com/currycan/rabbitmq/master/source/rabbitmq/rabbitmq-dump-queue && \
     chmod +x /usr/local/bin/rabbitmq-dump-queue && \
-    wget --no-check-certificate -O /usr/lib/rabbitmq/lib/rabbitmq_server-3.7.8/plugins \
+    wget --no-check-certificate -P /usr/lib/rabbitmq/lib/rabbitmq_server-3.7.8/plugins \
     https://raw.githubusercontent.com/currycan/rabbitmq/master/source/rabbitmq/rabbitmq_delayed_message_exchange-20171201-3.7.x.ez && \
     apt-get purge -y --auto-remove $buildDeps && \
     rm -rf /var/cache/apt/* && \
