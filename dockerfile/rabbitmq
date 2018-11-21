@@ -4,10 +4,32 @@ LABEL maintainer "Platform/IIBU <zhangzhitao@fmsh.com.cn>"
 LABEL base="rabbitmq:3.7-management"
 
 RUN set -ex && \
+    mkdir /usr/share/man/man1 && \
+    echo "dash dash/sh boolean false" | debconf-set-selections && \
+    dpkg-reconfigure -p critical dash
+RUN set -ex && \
     buildDeps=" \
         wget \
         unzip \
     " && \
+    plugins=( \
+        rabbitmq_delayed_message_exchange-20171201-3.7.x.ez \
+        accept-0.3.3.ez \
+        prometheus-3.5.1.ez \
+        prometheus_httpd-2.1.8.ez \
+        prometheus_process_collector-1.3.1.ez \
+        prometheus_rabbitmq_exporter-3.7.2.3.ez \
+        prometheus_cowboy-0.1.4.ez \
+    ) && \
+    enable_plugins=( \
+        rabbitmq_federation \
+        rabbitmq_federation_management \
+        rabbitmq_shovel \
+        rabbitmq_shovel_management \
+        rabbitmq_sharding \
+        rabbitmq_delayed_message_exchange \
+        prometheus_rabbitmq_exporter \
+    ) && \
     apt-get update && \
     apt-get install -y ${buildDeps} --no-install-recommends && \
     wget --no-check-certificate -O /usr/local/bin/cluster_entrypoint.sh https://raw.githubusercontent.com/currycan/rabbitmq/master/source/rabbitmq/cluster_entrypoint.sh && \
@@ -16,19 +38,16 @@ RUN set -ex && \
     chmod +x /usr/local/bin/docker-entrypoint.sh && \
     wget --no-check-certificate -O /usr/local/bin/rabbitmq-dump-queue https://raw.githubusercontent.com/currycan/rabbitmq/master/source/rabbitmq/rabbitmq-dump-queue && \
     chmod +x /usr/local/bin/rabbitmq-dump-queue && \
-    wget --no-check-certificate -P /usr/lib/rabbitmq/lib/rabbitmq_server-3.7.8/plugins \
-    https://raw.githubusercontent.com/currycan/rabbitmq/master/source/rabbitmq/rabbitmq_delayed_message_exchange-20171201-3.7.x.ez && \
+    for plugin in ${plugins[@]};do \
+        wget --no-check-certificate -P /usr/lib/rabbitmq/lib/rabbitmq_server-${RABBITMQ_VERSION}/plugins/ \
+        https://raw.githubusercontent.com/currycan/rabbitmq/master/source/rabbitmq/${plugin}; \
+    done && \
     apt-get purge -y --auto-remove $buildDeps && \
     rm -rf /var/cache/apt/* && \
     rm -rf /var/lib/apt/lists/* && \
-
-    rabbitmq-plugins enable --offline rabbitmq_sharding && \
-    rabbitmq-plugins enable --offline rabbitmq_federation && \
-    rabbitmq-plugins enable --offline rabbitmq_federation_management && \
-    rabbitmq-plugins enable --offline rabbitmq_shovel && \
-    rabbitmq-plugins enable --offline rabbitmq_shovel_management
-
-# COPY source/rabbitmq /usr/local/bin
+    for enable_plugin in ${enable_plugins[@]};do \
+        rabbitmq-plugins enable --offline ${enable_plugin}; \
+    done
 
 ENV TZ=Asia/Shanghai \
     RABBITMQ_NODE_IP_ADDRESS=0.0.0.0 \
