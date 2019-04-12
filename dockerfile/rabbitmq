@@ -1,4 +1,4 @@
-FROM rabbitmq:3.7-management
+FROM rabbitmq:3.7.14-management
 
 LABEL maintainer "Platform/IIBU <zhangzhitao@fmsh.com.cn>"
 LABEL base="rabbitmq:3.7-management"
@@ -6,18 +6,21 @@ LABEL base="rabbitmq:3.7-management"
 RUN set -ex && \
     echo "dash dash/sh boolean false" | debconf-set-selections && \
     dpkg-reconfigure -p critical dash
+
+ARG PROM_VER=v3.7.2.5
+
 RUN set -ex && \
     buildDeps=" \
         wget \
         unzip \
     " && \
     plugins=( \
-        accept-0.3.3.ez \
-        prometheus-3.5.1.ez \
-        prometheus_httpd-2.1.8.ez \
-        prometheus_process_collector-1.3.1.ez \
-        prometheus_rabbitmq_exporter-3.7.2.3.ez \
-        prometheus_cowboy-0.1.4.ez \
+        accept-0.3.5.ez \
+        prometheus-4.2.2.ez \
+        prometheus_cowboy-0.1.7.ez \
+        prometheus_httpd-2.1.10.ez \
+        prometheus_process_collector-1.4.3.ez \
+        prometheus_rabbitmq_exporter-3.7.2.5.ez \
     ) && \
     enable_plugins=( \
         rabbitmq_federation \
@@ -37,8 +40,8 @@ RUN set -ex && \
     wget --no-check-certificate -O /usr/local/bin/rabbitmq-dump-queue https://raw.githubusercontent.com/currycan/rabbitmq/master/source/rabbitmq/rabbitmq-dump-queue && \
     chmod +x /usr/local/bin/rabbitmq-dump-queue && \
     for plugin in ${plugins[@]};do \
-        wget --no-check-certificate -P /usr/lib/rabbitmq/lib/rabbitmq_server-${RABBITMQ_VERSION}/plugins/ \
-        https://raw.githubusercontent.com/currycan/rabbitmq/master/source/rabbitmq/${plugin}; \
+    wget --no-check-certificate -P /opt/rabbitmq/plugins/ \
+        https://github.com/deadtrickster/prometheus_rabbitmq_exporter/releases/download/${PROM_VER}/${plugin};\
     done && \
     apt-get purge -y --auto-remove $buildDeps && \
     rm -rf /var/cache/apt/* && \
