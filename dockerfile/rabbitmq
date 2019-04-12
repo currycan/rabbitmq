@@ -12,7 +12,6 @@ RUN set -ex && \
         unzip \
     " && \
     plugins=( \
-        rabbitmq_delayed_message_exchange-20171201-3.7.x.ez \
         accept-0.3.3.ez \
         prometheus-3.5.1.ez \
         prometheus_httpd-2.1.8.ez \
@@ -26,7 +25,6 @@ RUN set -ex && \
         rabbitmq_shovel \
         rabbitmq_shovel_management \
         rabbitmq_sharding \
-        rabbitmq_delayed_message_exchange \
         prometheus_rabbitmq_exporter \
         rabbitmq_peer_discovery_k8s \
     ) && \
