@@ -4,7 +4,6 @@ LABEL maintainer "Platform/IIBU <zhangzhitao@fmsh.com.cn>"
 LABEL base="rabbitmq:3.7-management"
 
 RUN set -ex && \
-    mkdir /usr/share/man/man1 && \
     echo "dash dash/sh boolean false" | debconf-set-selections && \
     dpkg-reconfigure -p critical dash
 RUN set -ex && \
