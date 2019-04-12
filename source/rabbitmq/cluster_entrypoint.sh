@@ -10,8 +10,6 @@ if [ 0"$RABBITMQ_NODE_TYPE" != "0" ];then
             exec "$@"
         elif [ $RABBITMQ_NODE_TYPE == "ram" ];then
             docker-entrypoint.sh rabbitmq-server -detached # 先按官方入口文件启动且是后台运行
-            rabbitmq-plugins disable rabbitmq_delayed_message_exchange
-            rm -f /usr/lib/rabbitmq/lib/rabbitmq_server-3.7.8/plugins/rabbitmq_delayed_message_exchange-20171201-3.7.x.ez
             rabbitmqctl stop_app # 停止应用
             rabbitmqctl join_cluster --ram $RABBITMQ_CLUSTER_NODE_NAME # 加入rmqha_node0集群
             rabbitmqctl start_app # 启动应用
