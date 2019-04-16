@@ -50,17 +50,17 @@ RUN set -ex && \
         rabbitmq-plugins enable --offline ${enable_plugin}; \
     done
 
-ENV TZ=Asia/Shanghai \
-    RABBITMQ_NODE_IP_ADDRESS=0.0.0.0 \
-    RABBITMQ_NODE_PORT=5672 \
-    RABBITMQ_SASL_LOGS=/var/lib/rabbitmq/logs \
-    RABBITMQ_LOG_BASE=/var/lib/rabbitmq/logs \
-    # RABBITMQ_LOGS=/var/lib/rabbitmq/logs/RABBITMQ_NODENAME.log \
-    RABBITMQ_DEFAULT_USER=user \
-    RABBITMQ_DEFAULT_PASS=password \
-    RABBITMQ_DEFAULT_VHOST=/
+# ENV TZ=Asia/Shanghai \
+#     RABBITMQ_NODE_IP_ADDRESS=0.0.0.0 \
+#     RABBITMQ_NODE_PORT=5672 \
+#     RABBITMQ_SASL_LOGS=/var/lib/rabbitmq/logs \
+#     RABBITMQ_LOG_BASE=/var/lib/rabbitmq/logs \
+#     # RABBITMQ_LOGS=/var/lib/rabbitmq/logs/RABBITMQ_NODENAME.log \
+#     RABBITMQ_DEFAULT_USER=user \
+#     RABBITMQ_DEFAULT_PASS=password \
+#     RABBITMQ_DEFAULT_VHOST=/
 
 ENTRYPOINT ["cluster_entrypoint.sh","docker-entrypoint.sh"]
 
-EXPOSE 4369 5671 5672 15672 25672
+EXPOSE 4369 5671 5672 15672 25672 5670
 CMD ["rabbitmq-server"]
