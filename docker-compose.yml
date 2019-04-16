@@ -1,7 +1,70 @@
-version: '3.3'
+version: "3"
 services:
-  rabbitmq:
-    image: ${DOCKER_REPO}/rabbitmq:3.7-management
-    build:
-      context: .
-      dockerfile: dockerfile/rabbitmq
+  rbmqa:
+    image: currycan/rabbitmq:3.7-management
+    container_name: rmqha_node0
+    restart: always
+    network_mode: "host"
+    hostname: rmqha_node0
+    ports:
+      - "15672:15672"
+      - "5672:5672"
+    volumes:
+      - "./rabbitmq_data:/var/lib/rabbitmq"
+    extra_hosts:
+      - "rmqha_node0:192.168.211.137"
+      - "rmqha_node1:192.168.211.171"
+      - "rmqha_node2:192.168.211.188"
+    environment:
+      - RABBITMQ_DEFAULT_USER=user
+      - RABBITMQ_DEFAULT_PASS=password
+      - RABBITMQ_NODE_TYPE=stats
+      - RABBITMQ_LOGS=/var/lib/rabbitmq/logs/rabbit@rmqha_node0.log
+      - RABBITMQ_ERLANG_COOKIE=xMkJQkN!C2RZwC2RZw@1kIxa#5oXgZO0gxrG0
+      - RABBITMQ_CLUSTER_NODE_NAME=rabbit@rmqha_node0
+
+  rbmqb:
+    image: currycan/rabbitmq:3.7-management
+    container_name: rmqha_node1
+    restart: always
+    network_mode: "host"
+    hostname: rmqha_node1
+    ports:
+      - "15672:15672"
+      - "5672:5672"
+    volumes:
+      - "./rabbitmq_data:/var/lib/rabbitmq"
+    extra_hosts:
+      - "rmqha_node0:192.168.211.137"
+      - "rmqha_node1:192.168.211.171"
+      - "rmqha_node2:192.168.211.188"
+    environment:
+      - RABBITMQ_DEFAULT_USER=user
+      - RABBITMQ_DEFAULT_PASS=password
+      - RABBITMQ_NODE_TYPE=disc
+      - RABBITMQ_LOGS=/var/lib/rabbitmq/logs/rabbit@rmqha_node1.log
+      - RABBITMQ_ERLANG_COOKIE=xMkJQkN!C2RZwC2RZw@1kIxa#5oXgZO0gxrG0
+      - RABBITMQ_CLUSTER_NODE_NAME=rabbit@rmqha_node0
+
+  rbmqc:
+    image: currycan/rabbitmq:3.7-management
+    container_name: rmqha_node2
+    restart: always
+    network_mode: "host"
+    hostname: rmqha_node2
+    ports:
+      - "15672:15672"
+      - "5672:5672"
+    volumes:
+      - "./rabbitmq_data:/var/lib/rabbitmq"
+    extra_hosts:
+      - "rmqha_node0:192.168.211.137"
+      - "rmqha_node1:192.168.211.171"
+      - "rmqha_node2:192.168.211.188"
+    environment:
+      - RABBITMQ_DEFAULT_USER=user
+      - RABBITMQ_DEFAULT_PASS=password
+      - RABBITMQ_NODE_TYPE=disc
+      - RABBITMQ_LOGS=/var/lib/rabbitmq/logs/rabbit@rmqha_node2.log
+      - RABBITMQ_ERLANG_COOKIE=xMkJQkN!C2RZwC2RZw@1kIxa#5oXgZO0gxrG0
+      - RABBITMQ_CLUSTER_NODE_NAME=rabbit@rmqha_node0
