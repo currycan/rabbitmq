@@ -1,0 +1,82 @@
+version: "3.6"
+services:
+  rbmqa:
+    image: harbor.iibu.com/base/rabbitmq:3.7-management
+    container_name: rabbitmq_stat
+    restart: always
+    hostname: rabbitmq_stat
+    ports:
+      - "15671:15672"
+      - "5671:5672"
+    volumes:
+      - "./rabbitmq_data/a:/var/lib/rabbitmq"
+    extra_hosts:
+      - "rabbitmq_stat:10.9.0.11"
+      - "rabbitmq_ram1:10.9.0.12"
+      - "rabbitmq_ram2:10.9.0.13"
+    environment:
+      - RABBITMQ_NODE_TYPE=stats
+      # - RABBITMQ_LOGS=/var/lib/rabbitmq/logs/rabbit@rabbitmq_stat.log
+      - RABBITMQ_ERLANG_COOKIE=xMkJQkN!C2RZwC2RZw@1kIxa#5oXgZO0gxrG0
+      - RABBITMQ_CLUSTER_NODE_NAME=rabbit@rabbitmq_stat
+    networks:
+      rabbitmq:
+        ipv4_address: 10.9.0.11
+
+  rbmqb:
+    image: harbor.iibu.com/base/rabbitmq:3.7-management
+    container_name: rabbitmq_disc1
+    restart: always
+    hostname: rabbitmq_disc1
+    ports:
+      - "15672:15672"
+      - "5672:5672"
+    volumes:
+      - "./rabbitmq_data/b:/var/lib/rabbitmq"
+    extra_hosts:
+      - "rabbitmq_stat:10.9.0.11"
+      - "rabbitmq_ram1:10.9.0.12"
+      - "rabbitmq_ram2:10.9.0.13"
+    environment:
+      - RABBITMQ_NODE_TYPE=disc
+      # - RABBITMQ_LOGS=/var/lib/rabbitmq/logs/rabbit@rabbitmq_ram1.log
+      - RABBITMQ_ERLANG_COOKIE=xMkJQkN!C2RZwC2RZw@1kIxa#5oXgZO0gxrG0
+      - RABBITMQ_CLUSTER_NODE_NAME=rabbit@rabbitmq_stat
+    networks:
+      rabbitmq:
+        ipv4_address: 10.9.0.12
+    depends_on:
+      - rbmqa
+
+  rbmqc:
+    image: harbor.iibu.com/base/rabbitmq:3.7-management
+    container_name: rabbitmq_disc2
+    restart: always
+    hostname: rabbitmq_disc2
+    ports:
+      - "15673:15672"
+      - "5673:5672"
+    volumes:
+      - "./rabbitmq_data/c:/var/lib/rabbitmq"
+    extra_hosts:
+      - "rabbitmq_stat:10.9.0.11"
+      - "rabbitmq_ram1:10.9.0.12"
+      - "rabbitmq_ram2:10.9.0.13"
+    environment:
+      - RABBITMQ_NODE_TYPE=disc
+      # - RABBITMQ_LOGS=/var/lib/rabbitmq/logs/rabbit@rabbitmq_ram2.log
+      - RABBITMQ_ERLANG_COOKIE=xMkJQkN!C2RZwC2RZw@1kIxa#5oXgZO0gxrG0
+      - RABBITMQ_CLUSTER_NODE_NAME=rabbit@rabbitmq_stat
+    networks:
+      rabbitmq:
+        ipv4_address: 10.9.0.13
+    depends_on:
+      - rbmqa
+
+
+networks:
+  rabbitmq:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 10.9.0.0/16

@@ -1,0 +1,569 @@
+{
+  "rabbit_version": "3.7.7",
+  "users": [
+    {
+      "name": "candy",
+      "password_hash": "s0B7P6JtGQyH07Z0dQx3UbIbj+HnK+XFohl3ALW7H30lQgb2",
+      "hashing_algorithm": "rabbit_password_hashing_sha256",
+      "tags": "administrator"
+    },
+    {
+      "name": "user",
+      "password_hash": "iXATMfoh3e6N9a6dJflcE6gIwyBF8JP2PP4CObLrf3PVndcG",
+      "hashing_algorithm": "rabbit_password_hashing_sha256",
+      "tags": "administrator"
+    },
+    {
+      "name": "candy_prod",
+      "password_hash": "I0ukXKHYiYdFocBI3WK3bZbivkrrCqZd/9QmVvtEnrWQ98Hx",
+      "hashing_algorithm": "rabbit_password_hashing_sha256",
+      "tags": "none"
+    }
+  ],
+  "vhosts": [
+    {
+      "name": "candy"
+    },
+    {
+      "name": "/"
+    }
+  ],
+  "permissions": [
+    {
+      "user": "candy_prod",
+      "vhost": "candy",
+      "configure": ".*",
+      "write": ".*",
+      "read": ".*"
+    },
+    {
+      "user": "candy",
+      "vhost": "candy",
+      "configure": ".*",
+      "write": ".*",
+      "read": ".*"
+    },
+    {
+      "user": "user",
+      "vhost": "candy",
+      "configure": ".*",
+      "write": ".*",
+      "read": ".*"
+    },
+    {
+      "user": "user",
+      "vhost": "/",
+      "configure": ".*",
+      "write": ".*",
+      "read": ".*"
+    }
+  ],
+  "topic_permissions": [],
+  "parameters": [],
+  "global_parameters": [
+    {
+      "name": "cluster_name",
+      "value": "rabbit@rmqha_node0"
+    }
+  ],
+  "policies": [
+    {
+      "vhost": "candy",
+      "name": "candy.biz",
+      "pattern": "^FM.*biz.*",
+      "apply-to": "all",
+      "definition": {
+        "ha-mode": "nodes",
+        "ha-params": [
+          "rabbit@rmqha_node2",
+          "rabbit@rmqha_node0"
+        ],
+        "ha-sync-mode": "automatic"
+      },
+      "priority": 10
+    },
+    {
+      "vhost": "candy",
+      "name": "candy.dp",
+      "pattern": "^FM.*dp.*",
+      "apply-to": "all",
+      "definition": {
+        "ha-mode": "nodes",
+        "ha-params": [
+          "rabbit@rmqha_node2",
+          "rabbit@rmqha_node0"
+        ],
+        "ha-sync-mode": "automatic"
+      },
+      "priority": 10
+    },
+    {
+      "vhost": "candy",
+      "name": "candy.ap",
+      "pattern": "^FM.*ap.*",
+      "apply-to": "all",
+      "definition": {
+        "ha-mode": "nodes",
+        "ha-params": [
+          "rabbit@rmqha_node1",
+          "rabbit@rmqha_node0"
+        ],
+        "ha-sync-mode": "automatic"
+      },
+      "priority": 10
+    },
+    {
+      "vhost": "candy",
+      "name": "candy.cp",
+      "pattern": "^FM.*cp.*",
+      "apply-to": "all",
+      "definition": {
+        "ha-mode": "nodes",
+        "ha-params": [
+          "rabbit@rmqha_node1",
+          "rabbit@rmqha_node0"
+        ],
+        "ha-sync-mode": "automatic"
+      },
+      "priority": 10
+    },
+    {
+      "vhost": "candy",
+      "name": "candy.tsm",
+      "pattern": "^FM.*tsm.*",
+      "apply-to": "all",
+      "definition": {
+        "ha-mode": "nodes",
+        "ha-params": [
+          "rabbit@rmqha_node2",
+          "rabbit@rmqha_node0"
+        ],
+        "ha-sync-mode": "automatic"
+      },
+      "priority": 10
+    }
+  ],
+  "queues": [
+    {
+      "name": "FM.dx.nfcos.tsm.postApduResults.nfcosTsm",
+      "vhost": "candy",
+      "durable": true,
+      "auto_delete": false,
+      "arguments": {}
+    },
+    {
+      "name": "FM.dx.candy.cp.issueResult.01700001",
+      "vhost": "candy",
+      "durable": true,
+      "auto_delete": false,
+      "arguments": {}
+    },
+    {
+      "name": "FM.dx.nfcos.dp.putApduScripts.03000004",
+      "vhost": "candy",
+      "durable": true,
+      "auto_delete": false,
+      "arguments": {}
+    },
+    {
+      "name": "FM.dw.candy.ap.topupResult.03000007",
+      "vhost": "candy",
+      "durable": true,
+      "auto_delete": false,
+      "arguments": {
+        "x-dead-letter-exchange": "FM.candy.directExchange",
+        "x-dead-letter-routing-key": "FM.dx.candy.ap.topupResult.03000007"
+      }
+    },
+    {
+      "name": "FM.dw.candy.tsm.assignIssueTask",
+      "vhost": "candy",
+      "durable": true,
+      "auto_delete": false,
+      "arguments": {
+        "x-dead-letter-exchange": "FM.candy.directExchange",
+        "x-dead-letter-routing-key": "FM.dx.candy.tsm.assignIssueTask"
+      }
+    },
+    {
+      "name": "FM.dx.candy.ap.topupResult.03000007",
+      "vhost": "candy",
+      "durable": true,
+      "auto_delete": false,
+      "arguments": {}
+    },
+    {
+      "name": "FM.dx.candy.ap.issueResult.03000004",
+      "vhost": "candy",
+      "durable": true,
+      "auto_delete": false,
+      "arguments": {}
+    },
+    {
+      "name": "FM.dx.candy.tsm.assignIssueTask",
+      "vhost": "candy",
+      "durable": true,
+      "auto_delete": false,
+      "arguments": {}
+    },
+    {
+      "name": "FM.dw.nfcos.dp.putApduScripts.03000007",
+      "vhost": "candy",
+      "durable": true,
+      "auto_delete": false,
+      "arguments": {
+        "x-dead-letter-exchange": "FM.nfcos.directExchange",
+        "x-dead-letter-routing-key": "FM.dx.nfcos.dp.putApduScripts.03000007"
+      }
+    },
+    {
+      "name": "FM.dx.candy.ap.issueResult.03000007",
+      "vhost": "candy",
+      "durable": true,
+      "auto_delete": false,
+      "arguments": {}
+    },
+    {
+      "name": "FM.dw.candy.ap.issueResult.03000004",
+      "vhost": "candy",
+      "durable": true,
+      "auto_delete": false,
+      "arguments": {
+        "x-dead-letter-exchange": "FM.candy.directExchange",
+        "x-dead-letter-routing-key": "FM.dx.candy.ap.issueResult.03000004"
+      }
+    },
+    {
+      "name": "FM.dx.candy.biz.topupTaskResult.candySptcBroker",
+      "vhost": "candy",
+      "durable": true,
+      "auto_delete": false,
+      "arguments": {}
+    },
+    {
+      "name": "FM.dw.candy.cp.topupResult.01700001",
+      "vhost": "candy",
+      "durable": true,
+      "auto_delete": false,
+      "arguments": {
+        "x-dead-letter-exchange": "FM.candy.directExchange",
+        "x-dead-letter-routing-key": "FM.dx.candy.cp.topupResult.01700001"
+      }
+    },
+    {
+      "name": "FM.dw.nfcos.dp.putApduScripts.03000004",
+      "vhost": "candy",
+      "durable": true,
+      "auto_delete": false,
+      "arguments": {
+        "x-dead-letter-exchange": "FM.nfcos.directExchange",
+        "x-dead-letter-routing-key": "FM.dx.nfcos.dp.putApduScripts.03000004"
+      }
+    },
+    {
+      "name": "FM.dx.candy.tsm.assignTopupTask",
+      "vhost": "candy",
+      "durable": true,
+      "auto_delete": false,
+      "arguments": {}
+    },
+    {
+      "name": "FM.dx.nfcos.tsm.notifyApduScriptsSendResult.nfcosTsm",
+      "vhost": "candy",
+      "durable": true,
+      "auto_delete": false,
+      "arguments": {}
+    },
+    {
+      "name": "FM.dx.candy.cp.topupResult.01700001",
+      "vhost": "candy",
+      "durable": true,
+      "auto_delete": false,
+      "arguments": {}
+    },
+    {
+      "name": "FM.dw.candy.ap.issueResult.03000007",
+      "vhost": "candy",
+      "durable": true,
+      "auto_delete": false,
+      "arguments": {
+        "x-dead-letter-exchange": "FM.candy.directExchange",
+        "x-dead-letter-routing-key": "FM.dx.candy.ap.issueResult.03000007"
+      }
+    },
+    {
+      "name": "FM.dx.candy.biz.issueTaskResult.candySptcBroker",
+      "vhost": "candy",
+      "durable": true,
+      "auto_delete": false,
+      "arguments": {}
+    },
+    {
+      "name": "FM.dx.nfcos.dp.putApduScripts.03000007",
+      "vhost": "candy",
+      "durable": true,
+      "auto_delete": false,
+      "arguments": {}
+    },
+    {
+      "name": "FM.dw.candy.tsm.assignTopupTask",
+      "vhost": "candy",
+      "durable": true,
+      "auto_delete": false,
+      "arguments": {
+        "x-dead-letter-exchange": "FM.candy.directExchange",
+        "x-dead-letter-routing-key": "FM.dx.candy.tsm.assignTopupTask"
+      }
+    },
+    {
+      "name": "FM.dw.candy.cp.issueResult.01700001",
+      "vhost": "candy",
+      "durable": true,
+      "auto_delete": false,
+      "arguments": {
+        "x-dead-letter-exchange": "FM.candy.directExchange",
+        "x-dead-letter-routing-key": "FM.dx.candy.cp.issueResult.01700001"
+      }
+    },
+    {
+      "name": "FM.dw.candy.ap.topupResult.03000004",
+      "vhost": "candy",
+      "durable": true,
+      "auto_delete": false,
+      "arguments": {
+        "x-dead-letter-exchange": "FM.candy.directExchange",
+        "x-dead-letter-routing-key": "FM.dx.candy.ap.topupResult.03000004"
+      }
+    },
+    {
+      "name": "FM.dx.candy.ap.topupResult.03000004",
+      "vhost": "candy",
+      "durable": true,
+      "auto_delete": false,
+      "arguments": {}
+    }
+  ],
+  "exchanges": [
+    {
+      "name": "FM.candy.directExchange",
+      "vhost": "candy",
+      "type": "direct",
+      "durable": true,
+      "auto_delete": false,
+      "internal": false,
+      "arguments": {}
+    },
+    {
+      "name": "FM.nfcos.directExchange",
+      "vhost": "candy",
+      "type": "direct",
+      "durable": true,
+      "auto_delete": false,
+      "internal": false,
+      "arguments": {}
+    },
+    {
+      "name": "springCloudBus",
+      "vhost": "candy",
+      "type": "topic",
+      "durable": true,
+      "auto_delete": false,
+      "internal": false,
+      "arguments": {}
+    }
+  ],
+  "bindings": [
+    {
+      "source": "FM.candy.directExchange",
+      "vhost": "candy",
+      "destination": "FM.dw.candy.ap.issueResult.03000004",
+      "destination_type": "queue",
+      "routing_key": "FM.dw.candy.ap.issueResult.03000004",
+      "arguments": {}
+    },
+    {
+      "source": "FM.candy.directExchange",
+      "vhost": "candy",
+      "destination": "FM.dw.candy.ap.issueResult.03000007",
+      "destination_type": "queue",
+      "routing_key": "FM.dw.candy.ap.issueResult.03000007",
+      "arguments": {}
+    },
+    {
+      "source": "FM.candy.directExchange",
+      "vhost": "candy",
+      "destination": "FM.dw.candy.ap.topupResult.03000004",
+      "destination_type": "queue",
+      "routing_key": "FM.dw.candy.ap.topupResult.03000004",
+      "arguments": {}
+    },
+    {
+      "source": "FM.candy.directExchange",
+      "vhost": "candy",
+      "destination": "FM.dw.candy.ap.topupResult.03000007",
+      "destination_type": "queue",
+      "routing_key": "FM.dw.candy.ap.topupResult.03000007",
+      "arguments": {}
+    },
+    {
+      "source": "FM.candy.directExchange",
+      "vhost": "candy",
+      "destination": "FM.dw.candy.cp.issueResult.01700001",
+      "destination_type": "queue",
+      "routing_key": "FM.dw.candy.cp.issueResult.01700001",
+      "arguments": {}
+    },
+    {
+      "source": "FM.candy.directExchange",
+      "vhost": "candy",
+      "destination": "FM.dw.candy.cp.topupResult.01700001",
+      "destination_type": "queue",
+      "routing_key": "FM.dw.candy.cp.topupResult.01700001",
+      "arguments": {}
+    },
+    {
+      "source": "FM.candy.directExchange",
+      "vhost": "candy",
+      "destination": "FM.dw.candy.tsm.assignIssueTask",
+      "destination_type": "queue",
+      "routing_key": "FM.dw.candy.tsm.assignIssueTask",
+      "arguments": {}
+    },
+    {
+      "source": "FM.candy.directExchange",
+      "vhost": "candy",
+      "destination": "FM.dw.candy.tsm.assignTopupTask",
+      "destination_type": "queue",
+      "routing_key": "FM.dw.candy.tsm.assignTopupTask",
+      "arguments": {}
+    },
+    {
+      "source": "FM.candy.directExchange",
+      "vhost": "candy",
+      "destination": "FM.dx.candy.ap.issueResult.03000004",
+      "destination_type": "queue",
+      "routing_key": "FM.dx.candy.ap.issueResult.03000004",
+      "arguments": {}
+    },
+    {
+      "source": "FM.candy.directExchange",
+      "vhost": "candy",
+      "destination": "FM.dx.candy.ap.issueResult.03000007",
+      "destination_type": "queue",
+      "routing_key": "FM.dx.candy.ap.issueResult.03000007",
+      "arguments": {}
+    },
+    {
+      "source": "FM.candy.directExchange",
+      "vhost": "candy",
+      "destination": "FM.dx.candy.ap.topupResult.03000004",
+      "destination_type": "queue",
+      "routing_key": "FM.dx.candy.ap.topupResult.03000004",
+      "arguments": {}
+    },
+    {
+      "source": "FM.candy.directExchange",
+      "vhost": "candy",
+      "destination": "FM.dx.candy.ap.topupResult.03000007",
+      "destination_type": "queue",
+      "routing_key": "FM.dx.candy.ap.topupResult.03000007",
+      "arguments": {}
+    },
+    {
+      "source": "FM.candy.directExchange",
+      "vhost": "candy",
+      "destination": "FM.dx.candy.biz.issueTaskResult.candySptcBroker",
+      "destination_type": "queue",
+      "routing_key": "FM.dx.candy.biz.issueTaskResult.candySptcBroker",
+      "arguments": {}
+    },
+    {
+      "source": "FM.candy.directExchange",
+      "vhost": "candy",
+      "destination": "FM.dx.candy.biz.topupTaskResult.candySptcBroker",
+      "destination_type": "queue",
+      "routing_key": "FM.dx.candy.biz.topupTaskResult.candySptcBroker",
+      "arguments": {}
+    },
+    {
+      "source": "FM.candy.directExchange",
+      "vhost": "candy",
+      "destination": "FM.dx.candy.cp.issueResult.01700001",
+      "destination_type": "queue",
+      "routing_key": "FM.dx.candy.cp.issueResult.01700001",
+      "arguments": {}
+    },
+    {
+      "source": "FM.candy.directExchange",
+      "vhost": "candy",
+      "destination": "FM.dx.candy.cp.topupResult.01700001",
+      "destination_type": "queue",
+      "routing_key": "FM.dx.candy.cp.topupResult.01700001",
+      "arguments": {}
+    },
+    {
+      "source": "FM.candy.directExchange",
+      "vhost": "candy",
+      "destination": "FM.dx.candy.tsm.assignIssueTask",
+      "destination_type": "queue",
+      "routing_key": "FM.dx.candy.tsm.assignIssueTask",
+      "arguments": {}
+    },
+    {
+      "source": "FM.candy.directExchange",
+      "vhost": "candy",
+      "destination": "FM.dx.candy.tsm.assignTopupTask",
+      "destination_type": "queue",
+      "routing_key": "FM.dx.candy.tsm.assignTopupTask",
+      "arguments": {}
+    },
+    {
+      "source": "FM.nfcos.directExchange",
+      "vhost": "candy",
+      "destination": "FM.dw.nfcos.dp.putApduScripts.03000004",
+      "destination_type": "queue",
+      "routing_key": "FM.dw.nfcos.dp.putApduScripts.03000004",
+      "arguments": {}
+    },
+    {
+      "source": "FM.nfcos.directExchange",
+      "vhost": "candy",
+      "destination": "FM.dw.nfcos.dp.putApduScripts.03000007",
+      "destination_type": "queue",
+      "routing_key": "FM.dw.nfcos.dp.putApduScripts.03000007",
+      "arguments": {}
+    },
+    {
+      "source": "FM.nfcos.directExchange",
+      "vhost": "candy",
+      "destination": "FM.dx.nfcos.dp.putApduScripts.03000004",
+      "destination_type": "queue",
+      "routing_key": "FM.dx.nfcos.dp.putApduScripts.03000004",
+      "arguments": {}
+    },
+    {
+      "source": "FM.nfcos.directExchange",
+      "vhost": "candy",
+      "destination": "FM.dx.nfcos.dp.putApduScripts.03000007",
+      "destination_type": "queue",
+      "routing_key": "FM.dx.nfcos.dp.putApduScripts.03000007",
+      "arguments": {}
+    },
+    {
+      "source": "FM.nfcos.directExchange",
+      "vhost": "candy",
+      "destination": "FM.dx.nfcos.tsm.notifyApduScriptsSendResult.nfcosTsm",
+      "destination_type": "queue",
+      "routing_key": "FM.dx.nfcos.tsm.notifyApduScriptsSendResult.nfcosTsm",
+      "arguments": {}
+    },
+    {
+      "source": "FM.nfcos.directExchange",
+      "vhost": "candy",
+      "destination": "FM.dx.nfcos.tsm.postApduResults.nfcosTsm",
+      "destination_type": "queue",
+      "routing_key": "FM.dx.nfcos.tsm.postApduResults.nfcosTsm",
+      "arguments": {}
+    }
+  ]
+}
